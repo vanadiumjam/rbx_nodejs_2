@@ -1,0 +1,239 @@
+@charset "UTF-8";
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+footer{
+    color: white;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2.5em;
+    color: #ffea00;
+    text-shadow: 0 0 10px #00FF99, 0 0 20px #00FF99, 0 0 30px #00FF99;
+    animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neon {
+    0% {
+        text-shadow: 0 0 10px #00FF99, 0 0 20px #00FF99, 0 0 30px #00FF99;
+    }
+
+    100% {
+        text-shadow: 0 0 20px #FF00FF, 0 0 30px #FF00FF, 0 0 40px #FF00FF;
+    }
+}
+
+form {
+    background-color: rgba(0, 0, 0, 0.8);
+    margin: 50px auto;
+    padding: 30px;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+label {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    display: inline-block;
+    color: #00FF99;
+    text-shadow: 0 0 10px #00FF99;
+}
+
+input[type="email"],
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #00FF99;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+
+input[type="email"]:focus,
+input:focus {
+    border-color: #FF00FF;
+    box-shadow: 0 0 10px #FF00FF;
+    outline: none;
+    animation: glow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 15px #FF00FF;
+    }
+
+    100% {
+        box-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 30px #FF00FF;
+    }
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.2em;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.warning {
+    font-size: 1em;
+    color: #FF0000;
+    text-align: center;
+    margin-top: 20px;
+    animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.consent-checkbox {
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+.consent-checkbox label {
+    display: block;
+    margin-bottom: 10px;
+    color: #00FF99;
+}
+
+.consent-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.consent-checkbox label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+}
+
+.consent-checkbox label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #00FF99;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.consent-checkbox input[type="checkbox"]:checked+label::before {
+    background-color: #00FF99;
+    border-color: #00FF99;
+}
+
+.consent-checkbox input[type="checkbox"]:checked+label::after {
+    content: '✔';
+    position: absolute;
+    left: 4px;
+    top: -1px;
+    font-size: 16px;
+    color: white;
+}
+
+.consent-details-toggle {
+    font-size: 0.9em;
+    color: #FF00FF;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.consent-details {
+    display: none;
+    margin-left: 20px;
+    font-size: 0.9em;
+}
+
+.consent-details.show {
+    display: block;
+}
+
+details {
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    form {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    button {
+        font-size: 1.1em;
+    }
+
+    .warning {
+        font-size: 0.9em;
+    }
+
+    .consent-checkbox {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    form {
+        padding: 10px;
+    }
+
+    input[type="email"],
+    input {
+        font-size: 1em;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 1.1em;
+        padding: 10px 16px;
+    }
+
+    .warning {
+        font-size: 0.8em;
+    }
+
+    .consent-checkbox {
+        font-size: 0.8em;
+    }
+}

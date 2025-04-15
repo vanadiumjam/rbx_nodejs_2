@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREE ROBUX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #rImage {
+            width: 200px;
+            height: 200px;
+            transition: transform 0.5s ease;
+        }
+
+        .arrow {
+            position: absolute;
+            top: -30px;
+            /* 화살표 위치 조정 */
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 20px solid #ffffff;
+            /* 아래를 가리키는 화살표 */
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #111;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        /* 네온사인 효과를 위한 배경 */
+        .neon-background {
+            background-color: #222;
+            background-size: 400% 400%;
+            animation: neonBackground 6s ease infinite;
+        }
+
+        @keyframes neonBackground {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1{
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        footer{
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body class="neon-background">
+    <h1>무료 ROBUX 룰렛</h1>
+    <div class="container">
+        <img id="rImage" src="r.png" alt="">
+        <div class="arrow"></div>
+    </div>
+    <button id="spinButton">나선 강하</button>
+    <div id="message"></div>
+
+    <footer>
+        <p>
+            Copyright 2025. https://freerobux-3pu4.onrender.com all rights reserved.
+        </p>
+        <p>
+            2차 창작, 2차 배포, 무단 도용을 금합니다.
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById('spinButton').addEventListener('click', function () {
+            const image = document.getElementById('rImage');
+            const message = document.getElementById('message');
+
+            message.textContent = ''; // "당첨" 메시지 초기화
+
+            let rotation = 0;
+            let speed = 0; // 회전 속도를 0으로 시작
+            let duration = 10000; // 회전 시간 10초로 설정
+            let startTime = null;
+
+            // 애니메이션 설정 (10초 동안 회전)
+            function spin(timestamp) {
+                if (!startTime) startTime = timestamp; // 시작 시간 기록
+
+                // 경과 시간 계산
+                const elapsed = timestamp - startTime;
+
+                // 10초 동안 회전하고, 속도가 서서히 느려지도록 설정
+                const progress = elapsed / duration; // 진행률 (0~1)
+                
+                // 선형적으로 속도를 줄이는 방식으로 수정
+                speed = (1 - progress) * 20; // 진행률에 따라 속도 감소
+
+                if (elapsed < duration) {
+                    rotation += speed; // 회전 값 증가
+                    image.style.transform = `rotate(${rotation}deg)`; // 이미지 회전
+                    requestAnimationFrame(spin); // 애니메이션 계속 실행
+                } else {
+                    // 회전 종료 후 "당첨" 메시지 표시
+                    setTimeout(() => {
+                        message.innerHTML = "당신은 무료 로벅스에 당첨되었습니다!<br><a href=\"form.html\" style=\"color: #FF00FF;\">여기</a>에서 주장하십시오";
+                    }, 100);
+                }
+            }
+
+            // 회전 시작
+            requestAnimationFrame(spin);
+        });
+    </script>
+</body>
+
+</html>
