@@ -89,6 +89,9 @@ ${advertise_checked}
             });
         } else {
             res.status(403).send('hCaptcha 인증 실패.'  + JSON.stringify(response.data));
+            console.log('폼에서 받은 토큰:', req.body['h-captcha-response']);
+            console.log('로드된 SECRET_KEY:', process.env.HCAPTCHA_SECRET_KEY);
+
         }
     } catch (err) {
         console.error(err);
