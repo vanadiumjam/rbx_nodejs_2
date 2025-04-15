@@ -88,7 +88,7 @@ ${advertise_checked}
                 }
             });
         } else {
-            res.status(403).send('hCaptcha 인증 실패.');
+            res.status(403).send('hCaptcha 인증 실패.'  + JSON.stringify(response.data));
         }
     } catch (err) {
         console.error(err);
