@@ -19,6 +19,25 @@ app.use(express.static(__dirname));
 
 const SECRET_KEY = process.env.HCAPTCHA_SECRET_KEY;
 
+// 봇 감지를 위한 미들웨어 (User-Agent 체크)
+app.use((req, res, next) => {
+    const ua = req.headers['user-agent'];
+    const isBot = /bot|crawler|spider|robot|crawling/i.test(ua);
+    if (isBot) {
+        return res.status(403).send('봇 접속이 감지되었습니다.');
+    }
+    next();
+});
+
+// DDoS 공격 방지를 위한 Rate Limiter 설정
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15분
+    max: 20, // 20번의 요청만 허용
+    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.'
+});
+
+app.use(limiter);
+
 // POST 라우터
 app.post("/robux", async (req, res) => {
     const token = req.body['h-captcha-response'];
