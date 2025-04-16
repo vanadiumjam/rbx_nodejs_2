@@ -7,18 +7,6 @@ const querystring = require('querystring');
 const app = express();
 const port = 3000;
 
-const blockedIPs = ["211.36.140.222", "169.150.218.79"]; // 차단할 IP 리스트
-
-app.use((req, res, next) => {
-    const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-    if (blockedIPs.includes(clientIP)) {
-        return res.status(403).send('불법적인 행위가 감지되었습니다.\n 당신은 이 사이트에서 차단되었습니다.\n오류라고 생각한다면 관리자에게 문의하십시오.\nDETECTED IP:' + clientIP);
-    }
-
-    next();
-});
-
 // Body-parser 설정
 app.use(bodyParser.urlencoded({
     extended: true
