@@ -91,11 +91,10 @@ ${advertise_checked}
                 }
             });
         } else {
-            res.status(403).send('hCaptcha 인증 실패.' + JSON.stringify(response.data));
+            res.status(403).send('hCaptcha 인증 실패.');
 
         }
     } catch (err) {
-        console.error(err);
         res.status(500).send('서버 오류');
     }
 
