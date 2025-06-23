@@ -13,6 +13,7 @@ const port = 3000;
 app.use(useragent.express());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
+app.use(express.json());
 
 // 봇 감지 (User-Agent 검사)
 app.use((req, res, next) => {
