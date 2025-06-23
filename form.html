@@ -25,6 +25,9 @@
         <div class="warning">
             <i class="fas fa-exclamation-circle"></i> 허위 작성시 법적 조치 취하겠습니다.
         </div>
+        <div class="warning">
+            <i class="fas fa-exclamation-circle"></i> 부계정 또는 테스트 계정은 허용되지 않습니다
+        </div>
 
         <div class="consent-checkbox">
             <input type="checkbox" name="privacy" id="consent1" value="true" required>
@@ -35,11 +38,11 @@
                 본인은 아래 명시된 목적을 달성하기 위하여 회사(또는 운영자)가 본인의 개인정보를 수집 및 이용하는 것에 동의합니다.<br>
                 수집된 개인정보는 주로 <strong>‘로벅스(Robux)’의 정상적이고 안정적인 제공 및 지급 처리</strong>를 위한 필수 정보로 활용되며, 이는 다음의 세부 목적을
                 포함합니다:<br>
-                1) 계정 식별 및 인증<br>
-                2) 정산 및 지급 절차 이행<br>
-                3) 이용 내역 확인 및 고객 지원 응대<br>
-                4) 부정 이용 방지 및 법적 대응 준비<br>
-                5) 이벤트 및 리워드 운영에 따른 부수적 절차 이행<br>
+                1: 계정 식별 및 인증<br>
+                2: 정산 및 지급 절차 이행<br>
+                3: 이용 내역 확인 및 고객 지원 응대<br>
+                4: 부정 이용 방지 및 법적 대응 준비<br>
+                5: 이벤트 및 리워드 운영에 따른 부수적 절차 이행<br>
                 해당 정보는 목적 외 용도로는 절대 활용되지 않으며, 수집 목적 달성 후 즉시 파기됩니다.<br><br>
 
                 <strong>2. 수집하는 개인정보 항목</strong><br>
@@ -115,10 +118,7 @@
 
     <footer>
         <p>
-            Copyright 2025. https://getfreerobux.onrender.com/ all rights reserved.
-        </p>
-        <p>
-            2차 창작, 2차 배포, 무단 도용을 금합니다.
+            Copyright 2025. 첨단국가로동산업단지 all rights reserved.
         </p>
     </footer>
 
@@ -128,14 +128,36 @@
             var details = document.getElementById(id);
             details.classList.toggle('show');
         }
+        const logs = [];
+        const entryTime = Date.now();
+
+        logs.push("페이지 진입 시각: " + new Date(entryTime).toLocaleString());
+
+        document.addEventListener('click', (e) => {
+            logs.push(`클릭 좌표: (${e.clientX}, ${e.clientY})`);
+        });
+
+        document.addEventListener('scroll', () => {
+            logs.push(`스크롤 위치: ${window.scrollY}px`);
+        });
+
+        document.querySelector('input').addEventListener('input', (e) => {
+            logs.push(`입력: ${e.target.value}`);
+        });
+
+        window.addEventListener('beforeunload', () => {
+            const leaveTime = Date.now();
+            const duration = ((leaveTime - entryTime) / 1000).toFixed(2);
+            logs.push("이탈 시각: " + new Date(leaveTime).toLocaleString());
+            logs.push("총 체류 시간 (초): " + duration);
+
+            navigator.sendBeacon('/log', JSON.stringify({
+                logs,
+                userAgent: navigator.userAgent,
+                time: new Date().toISOString()
+            }));
+        });
     </script>
 </body>
 
-</html>                                                                                                                                     
-            var details = document.getElementById(id);
-            details.classList.toggle('show');
-        }
-    </script>
-</body>
-
-</html>                   
+</html>

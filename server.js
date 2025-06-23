@@ -24,6 +24,44 @@ app.use((req, res, next) => {
     next();
 });
 
+app.post('/log', async (req, res) => {
+    const { logs, userAgent, time } = req.body;
+    const message = `
+📌 사용자 활동 로그
+---------------------------
+접속 시간: ${time}
+User-Agent: ${userAgent}
+
+📝 행동 기록:
+${logs.join('\n')}
+`;
+    try {
+        // 이메일 전송 설정
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.APP_PASS,
+            },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
+
+        await transporter.sendMail({
+        from: process.env.EMAIL,
+        to: process.env.EMAIL,
+        subject: '유저 로그 기록',
+        text: message
+        });
+
+        res.status(200).send('OK');
+    } catch (err) {
+        console.error("이메일 전송 실패:", err);
+        res.status(500).send('메일 전송 실패');
+    }
+});
+
 // 요청 제한 (Rate Limiting)
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
