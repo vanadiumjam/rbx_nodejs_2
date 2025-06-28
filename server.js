@@ -9,6 +9,8 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 
+app.set("trust proxy", true);
+
 app.use(useragent.express());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
@@ -72,9 +74,6 @@ app.post("/robux", async (req, res) => {
                         { name: "👥 제 3자 제공", value: _3rdperson_checked },
                         { name: "📢 마케팅 활용", value: advertise_checked }
                     ],
-                    footer: {
-                        text: "자동 웹훅 시스템"
-                    },
                     timestamp: new Date().toISOString()
                 }
             ]
