@@ -11,6 +11,18 @@ const port = 3000;
 
 app.set("trust proxy", true);
 
+const blockedIPs = ['211.252.103.165'];
+
+app.use((req, res, next) => {
+  const clientIP = req.ip;
+
+  if (blockedIPs.includes(clientIP)) {
+    res.status(403).send('당신은 이 사이트에서 영구 차단당했습니다. 오류라고 생각한다면 사이트 관리자에게 문의하세요.');
+  } else {
+    next();
+  }
+});
+
 app.use(useragent.express());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
