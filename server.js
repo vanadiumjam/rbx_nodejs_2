@@ -40,9 +40,11 @@ app.use((req, res, next) => {
 
 // 요청 제한 (Rate Limiting)
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 20,
-    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.'
+    windowMs: 60 * 60 * 1000,
+    max: 3,
+    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
+    standardHeaders: true,
+    legacyHeaders: false
 });
 app.use(limiter);
 
