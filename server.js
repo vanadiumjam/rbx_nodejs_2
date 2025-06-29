@@ -11,7 +11,7 @@ const port = 3000;
 
 app.set("trust proxy", true);
 
-const blockedIPs = ['211.252.103.165', '114.204.116.243'];
+const blockedIPs = ['211.252.103.165'];
 
 app.use((req, res, next) => {
   const clientIP = req.ip;
